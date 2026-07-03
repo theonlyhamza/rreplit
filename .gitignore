@@ -1,0 +1,4 @@
+.env
+.bot.lock
+__pycache__/
+*.pyc
