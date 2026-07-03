@@ -1,0 +1,110 @@
+§
+    ÚoCj$  ã                   óÔ   — U d Z ddlZddlZddlZddlZi aee d<   ej         	                    ej         
+                    e
+¦  «        dd¦  «        Zi Z
+ee d<   d efd„Zd	efd
+„Zd
+efd„ZdS )
+ux   
+Local BIN database â€” zero HTTP lookups.
+Loads data/bins.json.gz once at import; all lookups are instant dict access.
+é    NÚ_DBÚdatazbins.json.gzÚ
+_HTTP_CACHEÚreturnc                  ó  — t           j                             t          ¦  «        sdS t	          j        t          dd¬¦  «        5 } t
+          j         | ¦  «        ad d d ¦  «         n
+# 1 swxY w Y   t          t          ¦  «        S )Nr   Úrtzutf-8)Úencoding)
+ÚosÚpathÚexistsÚ_DB_PATHÚgzipÚopenÚjsonÚloadr   Úlen)Úfs    úA:\checker\bot\bin_db.pyÚ	load_binsr   
+   sž   € å
+
+Œ7>Š>(Ñ
+#Ô
+#ð ØˆqÝ	
+Œ•8˜T¨GÐ	4Ñ	4Ô	4ð ¸ÝŒi˜‰lŒlˆðð ð ñ ô ð ð ð ð ð ð øøøð ð ð ð å
+s‰8Œ8€Os   ÁA$Á$A( Á+A( Úbin6c                 óð   — t                                | ¦  «        p!t                                | dd…         ¦  «        }|r7t          |t          ¦  «        r"t	          |¦  «        dk    rt
+          |¦  «        S dS )zFReturn (brand, type, level, bank, country, flag) or None if not found.Né   )r   ÚgetÚ
+isinstanceÚlistr   Útuple)r   Úentrys     r   Ú _lookupr      se   € åGŠGD‰MŒMÐ.SŸWšW T¨"¨1¨"¤XÑ.Ô.€EØ ð •˜E¥4Ñ(Ô(ð ­S°©Z¬Z¸1ª_ð ÝU‰|Œ|ÐØ
+ˆ4ó    Ú
+card_numberc           
+   ƒ   óN  K  — | dd…         }t          |¦  «        }|r|S |t          v r
+t          |         S 	 t          j        d¬¦  «        }t          j        |¬¦  «        4 ƒd{V —†}|                     d|› ¦  «        4 ƒd{V —†}|j        dk    r:t          j        | 	                    ¦   «         ƒ d{V —†¦  «        }|                     d d¦  «        pd|                     d	d¦  «        pd|                     d
+d¦  «        pd|                     d
+d¦  «        pd|                     dd¦  «        pd|                     d
+d¦  «        pdf} | t          |<   t          t          ¦  «        dk    r:t          t          ¦  «        dd…         D ]}t                               |d¦  «         Œ| cddd¦  «        ƒd{V —† cddd¦  «        ƒd{V —† S 	 ddd¦  «        ƒd{V —† n# 1 ƒd{V —†swxY w Y   ddd¦  «        ƒd{V —† n# 1 ƒd{V —†swxY w Y   n# t          $ r Y nw xY wdS )zŽ
+    Instant local lookup first; HTTP fallback only for unknown BINs.
+    Returns (brand, type, level, bank, country_name, country_flag).
+    Nr   )Útotal)Ú timeoutz https://bins.antipublic.cc/bins/éÈ   ÚbrandÚ-ÚtypeÚlevelÚbankÚcountry_nameÚcountry_flagÚ iÐ   iô  )r&   r&   r&   r&   r&   r,   )r   r   Ú aiohttpÚ
+ClientTimeoutÚ
+ClientSessionr   Ústatusr   ÚloadsÚtextr   r   ÚpopÚ	Exception)	r    r   Úhitr#   ÚsÚrÚdÚresultÚks	            r   Úget_bin_infor;      s²  è è € ð
+ r˜rŒ?€Då
+$‰-Œ-€CØ 
+ð Øˆ
+à 
+{Ð ð !Ý˜4Ô Ð ð
+ÝÔ'¨aÐ0Ñ0Ô0ˆ ÝÔ(°Ð9Ñ9Ô9ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"¸QØ—u’uÐFÀÐFÐFÑGÔGð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"È1Ø”8˜s’?ñ "Ýœ
+¨¯ª©¬ > > > > > >Ñ2Ô2AàŸš˜g¨cÑ2Ô2Ð9°cØŸš˜f¨cÑ2Ô2Ð9°cØŸš˜g¨cÑ2Ô2Ð9°cØŸš˜f¨cÑ2Ô2Ð9°cØŸš˜n¨cÑ2Ô2Ð9°cØŸš˜n¨bÑ1Ô1Ð8°bð
+ Fð )/•K Ñ%Ý;Ñ'Ô'¨$Ò.ð 5Ý!%¥kÑ!2Ô!2°4°C°4Ô!8ð 5ð 5˜AÝ'ŸOšO¨A¨tÑ4Ô4Ð4Ð4Ø!ð
+"ð 
+"ð 
+"ð 
+"ñ 
+"ô 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð	"ð 	"ð 	"ð 	"ñ 	"ô 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð"ð
+"ð 
+"ð 
+"ñ 
+"ô 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"ð 
+"øøøð 
+"ð 
+"ð 
+"ð 
+"ð	"ð 	"ð 	"ñ 	"ô 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"ð 	"øøøð 	"ð 	"ð 	"ð 	"øøõ" ð 
+ð 
+ð 
+Øˆð
+øøøð )Ð
+(sf   ·0H Á'HÂD"G Æ(HÆ:H ÇHÇ 
+G*	Ç*HÇ-G*	Ç.HÇ1H È
+H
+ È
+H ÈH
+ ÈH È
+H"È!H")Ú __doc__r   r   r
+   r-   r   ÚdictÚ__annotations__r
+   ÚjoinÚ dirnameÚ__file__r
+   r   Úintr   Ústrr   r;   © r   r   ú<module>rE      sã   ððð ð ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð Ð à€€T€€Ø
+
+Œ7<Š<˜œ Ÿš¨Ñ1Ô1°6¸>Ñ
+JÔ
+J€Ø€
+ˆTÐ Ð Ñ ð3ð ð ð ð ð#ð ð ð ð ð$) Cð $)ð $)ð $)ð $)ð $)ð $)r   
